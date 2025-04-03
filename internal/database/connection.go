@@ -1,8 +1,8 @@
 package database
 
 import (
-	"dashboard-bl/app/database/models"
 	"dashboard-bl/config"
+	"dashboard-bl/internal/database/models"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
