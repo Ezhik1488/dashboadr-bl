@@ -1,26 +1,70 @@
 # GraphQL schema example
+scalar Time
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+input ClientFilterInput {
+  name: String
+  inn: String
+  email: String
+  isKik: Boolean
+  sortBy: String
+  include: [String]
+  page: Int = 1
+  pageSize: Int = 20
 }
 
-type User {
-  id: ID!
+type ClientList {
+  items: [Client!]!
+  total: Int!
+}
+
+type Client {
+  id: Int!
   name: String!
+  inn: String!
+  email: String!
+  isKik: Boolean!
+  isPaymaster: Boolean!
+  createdAt: Time!
+  updatedAt: Time!
+  details: ClientDetail
+  services: [Service!]!
+}
+
+type ClientDetail {
+  fullName: String
+  director: String
+  kpp: String
+  ogrn: String
+  legalAddress: String
+  postAddress: String
+  bank: String
+  bik: String
+  corrAcc: String
+  calcAcc: String
+}
+
+type Service {
+  id: Int!
+  name: String!
+  description: String!
+  monthlyCost: Float!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+input CreateClient {
+  name: String!
+  inn: String!
+  email: String!
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
+  clients(filter: ClientFilterInput): ClientList!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createClient(input: CreateClient!): Client!
 }
+
+
+
