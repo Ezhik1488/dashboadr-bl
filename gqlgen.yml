@@ -1,129 +1,98 @@
-# Where are all the schema files located? globs are supported eg  src/**/*.graphqls
+# Где находятся все файлы схем? Поддерживаются глобальные шаблоны, например, src/**/*.graphqls
 schema:
   - graph/*.graphqls
-
-# Where should the generated server code go?
+# Куда должен быть помещен сгенерированный серверный код?
 exec:
   package: graph
-  layout: single-file # Only other option is "follow-schema," ie multi-file.
-
-  # Only for single-file layout:
+  layout: single-file # Единственный другой вариант — "follow-schema", т.е. многофайловый.
+  # Только для макета single-file:
   filename: graph/generated.go
-
-  # Only for follow-schema layout:
+  # Только для макета follow-schema:
   # dir: graph
   # filename_template: "{name}.generated.go"
-
-  # Optional: Maximum number of goroutines in concurrency to use per child resolvers(default: unlimited)
+  # Необязательно: Максимальное количество горутин в конкурентности для использования дочерних резолверов (по умолчанию: неограниченно)
   # worker_limit: 1000
-
-# Uncomment to enable federation
+# Раскомментируйте, чтобы включить федерацию
 # federation:
 #   filename: graph/federation.go
 #   package: graph
 #   version: 2
 #   options:
 #     computed_requires: true
-
-# Where should any generated models go?
+# Где должны храниться любые сгенерированные модели?
 model:
   filename: graph/model/models_gen.go
   package: model
-
-  # Optional: Pass in a path to a new gotpl template to use for generating the models
+  # Необязательно: Укажите путь к новому шаблону gotpl для генерации моделей
   # model_template: [your/path/model.gotpl]
-
-# Where should the resolver implementations go?
+# Где должны храниться реализации резолверов?
 resolver:
   package: graph
-  layout: follow-schema # Only other option is "single-file."
-
-  # Only for single-file layout:
+  layout: follow-schema # Единственный другой вариант — "single-file."
+  # Только для макета single-file:
   # filename: graph/resolver.go
-
-  # Only for follow-schema layout:
+  # Только для макета follow-schema:
   dir: graph
   filename_template: "{name}.resolvers.go"
-
-  # Optional: turn on to not generate template comments above resolvers
+  # Необязательно: Включите, чтобы не генерировать комментарии-шаблоны над резолверами
   # omit_template_comment: false
-  # Optional: Pass in a path to a new gotpl template to use for generating resolvers
+  # Необязательно: Укажите путь к новому шаблону gotpl для генерации резолверов
   # resolver_template: [your/path/resolver.gotpl]
-  # Optional: turn on to avoid rewriting existing resolver(s) when generating
-  # preserve_resolver: false
-
-# Optional: turn on use ` + "`" + `gqlgen:"fieldName"` + "`" + ` tags in your models
-# struct_tag: json
-
-# Optional: turn on to use []Thing instead of []*Thing
-# omit_slice_element_pointers: false
-
-# Optional: turn on to omit Is<Name>() methods to interface and unions
+  # Необязательно: Включите, чтобы избежать перезаписи существующих резолверов при генерации
+  #preserve_resolver: true
+# Необязательно: Включите использование тегов ` + "`" + `gqlgen:"fieldName"` + "`" + ` в ваших моделях
+  #struct_tag: json
+# Необязательно: Включите, чтобы использовать []Thing вместо []*Thing
+  #omit_slice_element_pointers: true
+# Необязательно: Включите, чтобы опустить методы Is<Name>() в интерфейсах и объединениях
 # omit_interface_checks: true
-
-# Optional: turn on to skip generation of ComplexityRoot struct content and Complexity function
+# Необязательно: Включите, чтобы пропустить генерацию содержимого структуры ComplexityRoot и функции Complexity
 # omit_complexity: false
-
-# Optional: turn on to not generate any file notice comments in generated files
+# Необязательно: Включите, чтобы не генерировать никаких комментариев в начале файла в сгенерированных файлах
 # omit_gqlgen_file_notice: false
-
-# Optional: turn on to exclude the gqlgen version in the generated file notice. No effect if `omit_gqlgen_file_notice` is true.
+# Необязательно: Включите, чтобы исключить версию gqlgen из уведомления в сгенерированном файле. Нет эффекта, если `omit_gqlgen_file_notice` имеет значение true.
 # omit_gqlgen_version_in_file_notice: false
-
-# Optional: turn on to exclude root models such as Query and Mutation from the generated models file.
+# Необязательно: Включите, чтобы исключить корневые модели, такие как Query и Mutation, из сгенерированного файла моделей.
 # omit_root_models: false
-
-# Optional: turn on to exclude resolver fields from the generated models file.
+# Необязательно: Включите, чтобы исключить поля резолвера из сгенерированного файла моделей.
 # omit_resolver_fields: false
-
-# Optional: turn off to make struct-type struct fields not use pointers
-# e.g. type Thing struct { FieldA OtherThing } instead of { FieldA *OtherThing }
+# Необязательно: Выключите, чтобы сделать поля структурных типов без использования указателей
+# Например, type Thing struct { FieldA OtherThing } вместо { FieldA *OtherThing }
 # struct_fields_always_pointers: true
-
-# Optional: turn off to make resolvers return values instead of pointers for structs
+# Необязательно: Выключите, чтобы заставить резолверы возвращать значения вместо указателей для структур
 # resolvers_always_return_pointers: true
-
-# Optional: turn on to return pointers instead of values in unmarshalInput
+# Необязательно: Включите, чтобы возвращать указатели вместо значений в unmarshalInput
 # return_pointers_in_unmarshalinput: false
-
-# Optional: wrap nullable input fields with Omittable
+# Необязательно: Обернуть допустимые поля ввода с помощью Omittable
 # nullable_input_omittable: true
-
-# Optional: set to speed up generation time by not performing a final validation pass.
+# Необязательно: Установите, чтобы ускорить время генерации, не выполняя финальный проход валидации.
 # skip_validation: true
-
-# Optional: set to skip running `go mod tidy` when generating server code
+# Необязательно: Установите, чтобы пропустить выполнение `go mod tidy` при генерации серверного кода
 # skip_mod_tidy: true
-
-# Optional: if this is set to true, argument directives that
-# decorate a field with a null value will still be called.
+# Необязательно: если установлено значение true, директивы аргументов,
+# декорирующие поле с нулевым значением, все равно будут вызываться.
 #
-# This enables argumment directives to not just mutate
-# argument values but to set them even if they're null.
+# Это позволяет директивам аргументов не только изменять
+# значения аргументов, но и устанавливать их даже если они равны null.
 call_argument_directives_with_null: true
-
-# Optional: set build tags that will be used to load packages
+# Необязательно: установите теги сборки, которые будут использоваться для загрузки пакетов
 # go_build_tags:
 #  - private
 #  - enterprise
-
-# Optional: set to modify the initialisms regarded for Go names
+# Необязательно: установите, чтобы изменить аббревиатуры, рассматриваемые для имен Go
 # go_initialisms:
-#   replace_defaults: false # if true, the default initialisms will get dropped in favor of the new ones instead of being added
-#   initialisms: # List of initialisms to for Go names
+#   replace_defaults: false # если true, стандартные аббревиатуры будут удалены в пользу новых
+#   initialisms: # Список аббревиатур для имён Go
 #     - 'CC'
 #     - 'BCC'
-
-# gqlgen will search for any type names in the schema in these go packages
-# if they match it will use them, otherwise it will generate them.
+# gqlgen будет искать любые имена типов в схеме в этих пакетах Go
+# Если они совпадают, он будет использовать их, в противном случае он сгенерирует их.
 autobind:
-#  - "dashboard-bl/graph/model"
-
-# This section declares type mapping between the GraphQL and go type systems
+  - "dashboard-bl/internal/database/models"
+# Этот раздел объявляет сопоставление типов между GraphQL и системами типов Go
 #
-# The first line in each type will be used as defaults for resolver arguments and
-# modelgen, the others will be allowed when binding to fields. Configure them to
-# your liking
+# Первая строка в каждом типе будет использована по умолчанию для аргументов резолвера и
+# modelgen, остальные будут разрешены при привязке к полям. Настройте их по своему усмотрению.
 models:
   ID:
     model:
@@ -131,21 +100,20 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
-  # gqlgen provides a default GraphQL UUID convenience wrapper for github.com/google/uuid 
-  # but you can override this to provide your own GraphQL UUID implementation
+  # gqlgen предоставляет удобную обертку UUID GraphQL по умолчанию для github.com/google/uuid
+  # но вы можете переопределить это, чтобы предоставить собственную реализацию UUID GraphQL
   UUID:
     model:
       - github.com/99designs/gqlgen/graphql.UUID
-
-  # The GraphQL spec explicitly states that the Int type is a signed 32-bit
-  # integer. Using Go int or int64 to represent it can lead to unexpected
-  # behavior, and some GraphQL tools like Apollo Router will fail when
-  # communicating numbers that overflow 32-bits.
+  # Спецификация GraphQL явно указывает, что тип Int является знаковым 32-битным
+  # целым числом. Использование Go int или int64 для его представления может привести к
+  # неожиданному поведению, и некоторые инструменты GraphQL, такие как Apollo Router, завершат работу при
+  # передаче чисел, которые переполняют 32 бита.
   #
-  # You may choose to use the custom, built-in Int64 scalar to represent 64-bit
-  # integers, or ignore the spec and bind Int to graphql.Int / graphql.Int64
-  # (the default behavior of gqlgen). This is fine in simple use cases when you
-  # do not need to worry about interoperability and only expect small numbers.
+  # Вы можете выбрать использование пользовательского встроенного скаляра Int64 для представления 64-битных
+  # целых чисел или игнорировать спецификацию и привязать Int к graphql.Int / graphql.Int64
+  # (поведение по умолчанию gqlgen). Это хорошо в простых случаях использования, когда вам
+  # не нужно беспокоиться о совместимости и ожидаются только небольшие числа.
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int32

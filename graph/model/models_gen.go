@@ -2,60 +2,74 @@
 
 package model
 
-import (
-	"time"
-)
-
-type Client struct {
-	ID          int32         `json:"id"`
-	Name        string        `json:"name"`
-	Inn         string        `json:"inn"`
-	Email       string        `json:"email"`
-	IsKik       bool          `json:"isKik"`
-	IsPaymaster bool          `json:"isPaymaster"`
-	CreatedAt   time.Time     `json:"createdAt"`
-	UpdatedAt   time.Time     `json:"updatedAt"`
-	Details     *ClientDetail `json:"details,omitempty"`
-	Services    []*Service    `json:"services"`
+type Mutation struct {
 }
 
-type ClientDetail struct {
-	FullName     *string `json:"fullName,omitempty"`
+type NewClientDetailInput struct {
+	FullName     *string `json:"full_name,omitempty"`
 	Director     *string `json:"director,omitempty"`
 	Kpp          *string `json:"kpp,omitempty"`
 	Ogrn         *string `json:"ogrn,omitempty"`
-	LegalAddress *string `json:"legalAddress,omitempty"`
-	PostAddress  *string `json:"postAddress,omitempty"`
+	LegalAddress *string `json:"legal_address,omitempty"`
+	PostAddress  *string `json:"post_address,omitempty"`
 	Bank         *string `json:"bank,omitempty"`
 	Bik          *string `json:"bik,omitempty"`
-	CorrAcc      *string `json:"corrAcc,omitempty"`
-	CalcAcc      *string `json:"calcAcc,omitempty"`
+	CorrAcc      *string `json:"corr_acc,omitempty"`
+	CalcAcc      *string `json:"calc_acc,omitempty"`
 }
 
-type ClientFilterInput struct {
-	Name     *string   `json:"name,omitempty"`
-	Inn      *string   `json:"inn,omitempty"`
-	Email    *string   `json:"email,omitempty"`
-	IsKik    *bool     `json:"isKik,omitempty"`
-	SortBy   *string   `json:"sortBy,omitempty"`
-	Include  []*string `json:"include,omitempty"`
-	Page     *int32    `json:"page,omitempty"`
-	PageSize *int32    `json:"pageSize,omitempty"`
+type NewClientInput struct {
+	Name        string                `json:"name"`
+	Inn         string                `json:"inn"`
+	Email       string                `json:"email"`
+	IsKik       *bool                 `json:"is_kik,omitempty"`
+	IsPaymaster *bool                 `json:"is_paymaster,omitempty"`
+	Details     *NewClientDetailInput `json:"details,omitempty"`
+	ServiceIds  []int32               `json:"service_ids,omitempty"`
 }
 
-type ClientList struct {
-	Items []*Client `json:"items"`
-	Total int32     `json:"total"`
+type NewDocumentInput struct {
+	ClientID     int32  `json:"client_id"`
+	PDF          string `json:"pdf"`
+	DocumentType string `json:"document_type"`
+}
+
+type NewServiceInput struct {
+	Name        string  `json:"name"`
+	Description *string `json:"description,omitempty"`
+	MonthlyCost float64 `json:"monthly_cost"`
 }
 
 type Query struct {
 }
 
-type Service struct {
-	ID          int32     `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	MonthlyCost float64   `json:"monthlyCost"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+type UpdateClientDetailInput struct {
+	FullName     *string `json:"full_name,omitempty"`
+	Director     *string `json:"director,omitempty"`
+	Kpp          *string `json:"kpp,omitempty"`
+	Ogrn         *string `json:"ogrn,omitempty"`
+	LegalAddress *string `json:"legal_address,omitempty"`
+	PostAddress  *string `json:"post_address,omitempty"`
+	Bank         *string `json:"bank,omitempty"`
+	Bik          *string `json:"bik,omitempty"`
+	CorrAcc      *string `json:"corr_acc,omitempty"`
+	CalcAcc      *string `json:"calc_acc,omitempty"`
+}
+
+type UpdateClientInput struct {
+	ID          int32                    `json:"id"`
+	Name        *string                  `json:"name,omitempty"`
+	Inn         *string                  `json:"inn,omitempty"`
+	Email       *string                  `json:"email,omitempty"`
+	IsKik       *bool                    `json:"is_kik,omitempty"`
+	IsPaymaster *bool                    `json:"is_paymaster,omitempty"`
+	Details     *UpdateClientDetailInput `json:"details,omitempty"`
+	ServiceIds  []int32                  `json:"service_ids,omitempty"`
+}
+
+type UpdateServiceInput struct {
+	ID          int32    `json:"id"`
+	Name        *string  `json:"name,omitempty"`
+	Description *string  `json:"description,omitempty"`
+	MonthlyCost *float64 `json:"monthly_cost,omitempty"`
 }

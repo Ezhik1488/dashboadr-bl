@@ -1,70 +1,139 @@
-# GraphQL schema example
 scalar Time
 
-input ClientFilterInput {
-  name: String
-  inn: String
-  email: String
-  isKik: Boolean
-  sortBy: String
-  include: [String]
-  page: Int = 1
-  pageSize: Int = 20
-}
-
-type ClientList {
-  items: [Client!]!
-  total: Int!
-}
-
+# ===== Типы =====
 type Client {
   id: Int!
   name: String!
   inn: String!
   email: String!
-  isKik: Boolean!
-  isPaymaster: Boolean!
-  createdAt: Time!
-  updatedAt: Time!
+  is_kik: Boolean!
+  is_paymaster: Boolean!
+  created_at: Time!
+  updated_at: Time!
   details: ClientDetail
   services: [Service!]!
+  documents: [ClientDocument!]!
 }
 
 type ClientDetail {
-  fullName: String
-  director: String
-  kpp: String
-  ogrn: String
-  legalAddress: String
-  postAddress: String
-  bank: String
-  bik: String
-  corrAcc: String
-  calcAcc: String
+  id: Int!
+  client_id: Int!
+  full_name: String!
+  director: String!
+  kpp: String!
+  ogrn: String!
+  legal_address: String!
+  post_address: String!
+  bank: String!
+  bik: String!
+  corr_acc: String!
+  calc_acc: String!
+}
+
+type ClientDocument {
+  id: Int!
+  client_id: Int!
+  pdf: String!
+  document_type: String!
+  created_at: Time!
+  updated_at: Time!
 }
 
 type Service {
   id: Int!
   name: String!
   description: String!
-  monthlyCost: Float!
-  createdAt: Time!
-  updatedAt: Time!
+  monthly_cost: Float!
+  created_at: Time!
+  updated_at: Time!
 }
 
-input CreateClient {
+# ===== Query =====
+type Query {
+  clients: [Client!]!
+  client(id: Int!): Client
+  services: [Service!]!
+  service(id: Int!): Service
+  documentsByClient(client_id: Int!): [ClientDocument!]!
+}
+
+# ===== Input =====
+input NewClientInput {
   name: String!
   inn: String!
   email: String!
+  is_kik: Boolean
+  is_paymaster: Boolean
+  details: NewClientDetailInput
+  service_ids: [Int!]
 }
 
-type Query {
-  clients(filter: ClientFilterInput): ClientList!
+input UpdateClientInput {
+  id: Int!
+  name: String
+  inn: String
+  email: String
+  is_kik: Boolean
+  is_paymaster: Boolean
+  details: UpdateClientDetailInput
+  service_ids: [Int!]
 }
 
+input NewClientDetailInput {
+  full_name: String
+  director: String
+  kpp: String
+  ogrn: String
+  legal_address: String
+  post_address: String
+  bank: String
+  bik: String
+  corr_acc: String
+  calc_acc: String
+}
+
+input UpdateClientDetailInput {
+  full_name: String
+  director: String
+  kpp: String
+  ogrn: String
+  legal_address: String
+  post_address: String
+  bank: String
+  bik: String
+  corr_acc: String
+  calc_acc: String
+}
+
+input NewServiceInput {
+  name: String!
+  description: String
+  monthly_cost: Float!
+}
+
+input UpdateServiceInput {
+  id: Int!
+  name: String
+  description: String
+  monthly_cost: Float
+}
+
+input NewDocumentInput {
+  client_id: Int!
+  pdf: String!
+  document_type: String!
+}
+
+# ===== Mutation =====
 type Mutation {
-  createClient(input: CreateClient!): Client!
+  createClient(input: NewClientInput!): Client!
+  updateClient(input: UpdateClientInput!): Client!
+  deleteClient(id: Int!): Boolean!
+
+  createService(input: NewServiceInput!): Service!
+  updateService(input: UpdateServiceInput!): Service!
+  deleteService(id: Int!): Boolean!
+
+  createDocument(input: NewDocumentInput!): ClientDocument!
+  deleteDocument(id: Int!): Boolean!
 }
-
-
-

@@ -7,15 +7,131 @@ package graph
 import (
 	"context"
 	"dashboard-bl/graph/model"
+	"dashboard-bl/internal/database/models"
 	"fmt"
 )
 
+// ID is the resolver for the id field.
+func (r *clientResolver) ID(ctx context.Context, obj *models.Client) (int32, error) {
+	panic(fmt.Errorf("not implemented: ID - id"))
+}
+
+// Documents is the resolver for the documents field.
+func (r *clientResolver) Documents(ctx context.Context, obj *models.Client) ([]*models.ClientDocument, error) {
+	panic(fmt.Errorf("not implemented: Documents - documents"))
+}
+
+// ID is the resolver for the id field.
+func (r *clientDetailResolver) ID(ctx context.Context, obj *models.ClientDetail) (int32, error) {
+	panic(fmt.Errorf("not implemented: ID - id"))
+}
+
+// ClientID is the resolver for the client_id field.
+func (r *clientDetailResolver) ClientID(ctx context.Context, obj *models.ClientDetail) (int32, error) {
+	panic(fmt.Errorf("not implemented: ClientID - client_id"))
+}
+
+// ID is the resolver for the id field.
+func (r *clientDocumentResolver) ID(ctx context.Context, obj *models.ClientDocument) (int32, error) {
+	panic(fmt.Errorf("not implemented: ID - id"))
+}
+
+// ClientID is the resolver for the client_id field.
+func (r *clientDocumentResolver) ClientID(ctx context.Context, obj *models.ClientDocument) (int32, error) {
+	panic(fmt.Errorf("not implemented: ClientID - client_id"))
+}
+
+// CreateClient is the resolver for the createClient field.
+func (r *mutationResolver) CreateClient(ctx context.Context, input model.NewClientInput) (*models.Client, error) {
+	panic(fmt.Errorf("not implemented: CreateClient - createClient"))
+}
+
+// UpdateClient is the resolver for the updateClient field.
+func (r *mutationResolver) UpdateClient(ctx context.Context, input model.UpdateClientInput) (*models.Client, error) {
+	panic(fmt.Errorf("not implemented: UpdateClient - updateClient"))
+}
+
+// DeleteClient is the resolver for the deleteClient field.
+func (r *mutationResolver) DeleteClient(ctx context.Context, id int32) (bool, error) {
+	panic(fmt.Errorf("not implemented: DeleteClient - deleteClient"))
+}
+
+// CreateService is the resolver for the createService field.
+func (r *mutationResolver) CreateService(ctx context.Context, input model.NewServiceInput) (*models.Service, error) {
+	panic(fmt.Errorf("not implemented: CreateService - createService"))
+}
+
+// UpdateService is the resolver for the updateService field.
+func (r *mutationResolver) UpdateService(ctx context.Context, input model.UpdateServiceInput) (*models.Service, error) {
+	panic(fmt.Errorf("not implemented: UpdateService - updateService"))
+}
+
+// DeleteService is the resolver for the deleteService field.
+func (r *mutationResolver) DeleteService(ctx context.Context, id int32) (bool, error) {
+	panic(fmt.Errorf("not implemented: DeleteService - deleteService"))
+}
+
+// CreateDocument is the resolver for the createDocument field.
+func (r *mutationResolver) CreateDocument(ctx context.Context, input model.NewDocumentInput) (*models.ClientDocument, error) {
+	panic(fmt.Errorf("not implemented: CreateDocument - createDocument"))
+}
+
+// DeleteDocument is the resolver for the deleteDocument field.
+func (r *mutationResolver) DeleteDocument(ctx context.Context, id int32) (bool, error) {
+	panic(fmt.Errorf("not implemented: DeleteDocument - deleteDocument"))
+}
+
 // Clients is the resolver for the clients field.
-func (r *queryResolver) Clients(ctx context.Context, filter *model.ClientFilterInput) (*model.ClientList, error) {
+func (r *queryResolver) Clients(ctx context.Context) ([]*models.Client, error) {
 	panic(fmt.Errorf("not implemented: Clients - clients"))
 }
+
+// Client is the resolver for the client field.
+func (r *queryResolver) Client(ctx context.Context, id int32) (*models.Client, error) {
+	panic(fmt.Errorf("not implemented: Client - client"))
+}
+
+// Services is the resolver for the services field.
+func (r *queryResolver) Services(ctx context.Context) ([]*models.Service, error) {
+	panic(fmt.Errorf("not implemented: Services - services"))
+}
+
+// Service is the resolver for the service field.
+func (r *queryResolver) Service(ctx context.Context, id int32) (*models.Service, error) {
+	panic(fmt.Errorf("not implemented: Service - service"))
+}
+
+// DocumentsByClient is the resolver for the documentsByClient field.
+func (r *queryResolver) DocumentsByClient(ctx context.Context, clientID int32) ([]*models.ClientDocument, error) {
+	panic(fmt.Errorf("not implemented: DocumentsByClient - documentsByClient"))
+}
+
+// ID is the resolver for the id field.
+func (r *serviceResolver) ID(ctx context.Context, obj *models.Service) (int32, error) {
+	panic(fmt.Errorf("not implemented: ID - id"))
+}
+
+// Client returns ClientResolver implementation.
+func (r *Resolver) Client() ClientResolver { return &clientResolver{r} }
+
+// ClientDetail returns ClientDetailResolver implementation.
+func (r *Resolver) ClientDetail() ClientDetailResolver { return &clientDetailResolver{r} }
+
+// ClientDocument returns ClientDocumentResolver implementation.
+func (r *Resolver) ClientDocument() ClientDocumentResolver { return &clientDocumentResolver{r} }
+
+// Mutation returns MutationResolver implementation.
+func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// Service returns ServiceResolver implementation.
+func (r *Resolver) Service() ServiceResolver { return &serviceResolver{r} }
+
+type clientResolver struct{ *Resolver }
+type clientDetailResolver struct{ *Resolver }
+type clientDocumentResolver struct{ *Resolver }
+type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type serviceResolver struct{ *Resolver }
