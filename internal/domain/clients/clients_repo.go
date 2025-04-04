@@ -21,7 +21,7 @@ type clientRepo struct {
 }
 
 // NewClientRepo - Конструктор ClientRepo
-func (r *clientRepo) NewClientRepo(db *gorm.DB, logger *logrus.Logger) *clientRepo {
+func NewClientRepo(db *gorm.DB, logger *logrus.Logger) ClientRepo {
 	return &clientRepo{db: db, logger: logger.WithFields(logrus.Fields{"repo": "client"})}
 }
 

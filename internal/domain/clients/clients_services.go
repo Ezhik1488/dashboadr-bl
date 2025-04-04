@@ -6,7 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type ClientServices struct {
+type ClientServices interface {
+	GetClients(filter ClientFilter) ([]*models.Client, int64, error)
 }
 
 type clientServices struct {
@@ -15,7 +16,7 @@ type clientServices struct {
 	clientRepo ClientRepo
 }
 
-func (s *clientServices) NewClientServices(db *gorm.DB, logger *logrus.Logger, clientRepo ClientRepo) *clientServices {
+func NewClientServices(db *gorm.DB, logger *logrus.Logger, clientRepo ClientRepo) ClientServices {
 	return &clientServices{db: db, logger: logger.WithField("service", "clients"), clientRepo: clientRepo}
 }
 
