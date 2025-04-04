@@ -11,4 +11,8 @@ type Client struct {
 	IsPaymaster bool      `gorm:"default:false" json:"is_paymaster"`
 	CreatedAt   time.Time `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt   time.Time `gorm:"autoUpdateTime" json:"updated_at"`
+
+	// Связи
+	Details  ClientDetail `gorm:"foreignKey:ClientID" json:"details"`
+	Services []Service    `gorm:"many2many:client_services" json:"services"`
 }
