@@ -117,7 +117,7 @@ func (r *clientRepo) GetWithFilters(filter ClientFilter) ([]*models.Client, int6
 		case "services":
 			query = query.Preload("Services")
 		default:
-			// Игнорируем неизвестные значения
+			r.logger.Warnf("invalid include flag: %s", include)
 		}
 	}
 
@@ -131,7 +131,9 @@ func (r *clientRepo) Create(db *gorm.DB, client *models.Client) error {
 	return db.Create(client).Error
 }
 
-func (r *clientRepo) Update(db *gorm.DB, client *models.Client) error { return nil }
+func (r *clientRepo) Update(db *gorm.DB, client *models.Client) error {
+	return db.Model(&models.Client{}).Updates(client).Error
+}
 
 func (r *clientRepo) Delete(db *gorm.DB, id int) error {
 	return db.Delete(&models.Client{}, id).Error

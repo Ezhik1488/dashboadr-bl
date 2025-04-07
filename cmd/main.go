@@ -7,9 +7,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
 	"os"
+	"time"
 )
 
 func main() {
+
+	fmt.Println(time.Now())
+
 	app := fiber.New(fiber.Config{
 		Prefork: false,
 	})

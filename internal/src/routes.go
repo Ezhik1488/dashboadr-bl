@@ -3,14 +3,13 @@ package src
 import (
 	"dashboard-bl/graph"
 	"dashboard-bl/internal/database"
-	"dashboard-bl/internal/domain/clients"
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 	"gorm.io/gorm"
-	"net/http"
 )
 
 func SetupRoutes(app *fiber.App, logger *logrus.Logger) {
@@ -21,28 +20,28 @@ func SetupRoutes(app *fiber.App, logger *logrus.Logger) {
 }
 
 func initGraphQL(app *fiber.App, db *gorm.DB, logger *logrus.Logger) {
-	clientRepo := clients.NewClientRepo(db, logger)
-	clientService := clients.NewClientServices(db, logger, clientRepo)
+	// clientRepo := clients.NewClientRepo(db, logger)
+	// clientService := clients.NewClientServices(db, logger, clientRepo)
 
-	resolver := graph.NewResolver(&clientService)
+	resolver := &graph.Resolver{}
+	schema := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
 
-	graphqlHandler := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
-	app.Post("/graphql", func(c *fiber.Ctx) error {
-		// Логирование входящего запроса
-		logger.Infof("Incoming GraphQL request: %s %s", c.Method(), c.Path())
+	// Настройка поддерживаемых транспортов
+	schema.AddTransport(transport.Options{})
+	schema.AddTransport(transport.GET{})
+	schema.AddTransport(transport.POST{})
+	schema.AddTransport(transport.MultipartForm{})
 
-		// Обработка запроса
-		fasthttpadaptor.NewFastHTTPHandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			graphqlHandler.ServeHTTP(w, r)
-		})(c.Context())
-
+	// Обработчик GraphQL
+	app.All("/graphql", func(c *fiber.Ctx) error {
+		fasthttpadaptor.NewFastHTTPHandlerFunc(schema.ServeHTTP)(c.Context())
 		return nil
 	})
 
-	// GraphQL Playground
 	app.Get("/", func(c *fiber.Ctx) error {
-
-		fasthttpadaptor.NewFastHTTPHandler(playground.Handler("GraphQL Playground", "/graphql"))(c.Context())
+		fasthttpadaptor.NewFastHTTPHandlerFunc(
+			playground.Handler("GraphQL Playground", "/graphql").ServeHTTP,
+		)(c.Context())
 		return nil
 	})
 }

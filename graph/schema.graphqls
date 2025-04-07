@@ -8,6 +8,8 @@ type Client {
   email: String!
   is_kik: Boolean!
   is_paymaster: Boolean!
+  rtu_domain: String!
+  carbon_pk: Int!
   created_at: Time!
   updated_at: Time!
   details: ClientDetail

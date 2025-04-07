@@ -8,4 +8,7 @@ type ClientService struct {
 	ServiceID int       `gorm:"foreignKey:ServiceID" json:"service_id"`
 	StartDate time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"start_date"`
 	EndDate   time.Time `gorm:"type:TIMESTAMP" json:"end_date"`
+
+	// Связи
+	Service Service `gorm:"foreignKey:ServiceID" json:"service,omitempty"`
 }
